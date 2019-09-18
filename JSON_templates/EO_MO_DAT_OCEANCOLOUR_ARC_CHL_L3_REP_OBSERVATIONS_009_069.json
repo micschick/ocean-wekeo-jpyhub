@@ -1,0 +1,35 @@
+{
+    "datasetId": "EO:MO:DAT:SEAICE_GLO_SEAICE_L4_NRT_OBSERVATIONS_011_001",
+    "stringChoiceValues": [
+        {
+            "name": "product",
+            "value": "METNO-GLO-SEAICE_CONC-SOUTH-L4-NRT-OBS"
+        }
+    ],
+    "multiStringSelectValues": [
+        {
+            "name": "variables",
+            "value": [
+                "ice_conc"
+            ]
+        }
+    ],
+    "dateRangeSelectValues": [
+        {
+            "name": "dtrange",
+            "start": "2018-10-01T13:00:00.000Z",
+            "end": "2018-10-07T13:00:00.000Z"
+        }
+    ],
+    "boundingBoxValues": [
+        {
+            "name": "bbox",
+            "bbox": [
+                -180,
+                -90,
+                180,
+                90
+            ]
+        }
+    ]
+}
