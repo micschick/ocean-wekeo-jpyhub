@@ -1,34 +1,34 @@
 {
-    "datasetId": "EO:MO:DAT:OCEANCOLOUR_GLO_CHL_L4_REP_OBSERVATIONS_009_093",
+    "datasetId": "EO:MO:DAT:SST_GLO_SST_L4_NRT_OBSERVATIONS_010_001",
     "stringChoiceValues": [
         {
             "name": "product",
-            "value": "dataset-oc-glo-chl-multi_cci-l4-chl_4km_monthly-rep-v02"
+            "value": "METOFFICE-GLO-SST-L4-NRT-OBS-SST-V2"
         }
     ],
     "multiStringSelectValues": [
         {
             "name": "variables",
             "value": [
-                "CHL"
+                "analysed_sst"
             ]
         }
     ],
     "dateRangeSelectValues": [
         {
             "name": "dtrange",
-            "start": "2016-05-01T00:00:00.000Z",
-            "end": "2016-05-31T00:00:00.000Z"
+            "start": "2017-08-18T00:00:00.000Z",
+            "end": "2017-08-20T00:00:00.000Z"
         }
     ],
     "boundingBoxValues": [
         {
             "name": "bbox",
             "bbox": [
-                -179.97917,
-                -89.979164,
-                179.97917,
-                89.979164
+                -179.975,
+                -89.975,
+                179.875,
+                89.975
             ]
         }
     ]

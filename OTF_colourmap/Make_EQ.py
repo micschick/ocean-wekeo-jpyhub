@@ -4,8 +4,35 @@ import matplotlib.gridspec as gridspec
 from matplotlib.colors import LinearSegmentedColormap
 import matplotlib.pyplot as plt
 import xarray as xr
+import os
 
-def plot_eq(vmin, vmax, **kwargs):
+def build_plot_command(vlimits,\
+                       red_widgets, green_widgets, blue_widgets):
+    
+    runCMD = 'iplot = interactive(eq.plot_eq'\
+                        + ', var=fixed(VAR), lon=fixed(LON), lat=fixed(LAT)' \
+                        + ', vmin=fixed(' + str(vlimits[0]) + ')' \
+                        + ', vmax=fixed(' + str(vlimits[1]) + '), ' \
+                        + ', '.join(red_widgets) + ', ' \
+                        + ', '.join(green_widgets) + ', ' \
+                        + ', '.join(blue_widgets) + ')'
+    return runCMD
+    
+def make_widgets(channel_red, channel_green, channel_blue):
+    '''
+     Build the interactive plotter widgets
+    '''
+    red_widgets = [] ; green_widgets = [] ; blue_widgets = []
+    for ii in range(len(channel_red)):
+        red_widgets.append('red' + str(ii) + '=' + 'widgets.FloatSlider(value=' \
+                           + str(channel_red[ii]) + ', min=0.0, max=1.0, step=0.025)')
+        green_widgets.append('green' + str(ii) + '=' + 'widgets.FloatSlider(value=' \
+                             + str(channel_green[ii]) + ', min=0.0, max=1.0, step=0.025)')
+        blue_widgets.append('blue' + str(ii) + '=' + 'widgets.FloatSlider(value=' \
+                            + str(channel_blue[ii]) + ', min=0.0, max=1.0, step=0.025)')
+    return red_widgets, green_widgets, blue_widgets
+
+def plot_eq(var, lon, lat, vmin, vmax, **kwargs):
 
     nchannels = int(len(kwargs)/3)    
     RED_list = []
@@ -39,7 +66,7 @@ def plot_eq(vmin, vmax, **kwargs):
     plt.ylim(0, 1.1)
     plt.xlabel('Channel')
     plt.ylabel('intensity')
-    leg1 =plt.legend([pr, pg, pb, pn, pbr],['red','green','blue','norm','r/g sens'])
+    leg1 = plt.legend([pr, pg, pb, pn, pbr],['red','green','blue','norm','r/g sens'])
     plt.xticks(x)
     plt.xlim([vmin, vmax])
     plt.ylim([0, 1.25])
@@ -68,16 +95,9 @@ def plot_eq(vmin, vmax, **kwargs):
               'blue': blue_tuple}
     thismap = LinearSegmentedColormap('manual', cdict1)
 
-    # import test SST file: downloaded from CMEMS
-    SST_file = "global-analysis-forecast-phy-001-024_1552636895524.nc"
-    ds1 = xr.open_dataset(SST_file)
-    LAT = ds1.latitude
-    LON = ds1.longitude
-    SST_K = np.squeeze(ds1.thetao.values) + 273.15
-    ds1.close()
-    SST_K = SST_K[:,1500:2500]
-    LON = LON[1500:2500]
-    plt.pcolormesh(LON, LAT, SST_K, cmap=thismap, vmin=vmin, vmax=vmax)
+    # plot variable
+    plt.pcolormesh(lon, lat, var, cmap=thismap, vmin=vmin, vmax=vmax)    
     plt.colorbar()
     plt.show()
+    
     return ax1, ax2, REDS, GREENS, BLUES
