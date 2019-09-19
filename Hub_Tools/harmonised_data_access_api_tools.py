@@ -255,6 +255,7 @@ def download_data(HAPI_dict, skip_existing=False):
      Download the data
     '''
     counter = 0
+    filenames = []
     for result in HAPI_dict["results"]['content']:
         externalUri = result['externalUri']
         product_size = result['fileSize']
@@ -267,7 +268,8 @@ def download_data(HAPI_dict, skip_existing=False):
                          stream=True)
         filename = os.path.join(HAPI_dict["download_dir_path"],\
                    get_filename_from_cd(r.headers.get('content-disposition')))
-
+        filenames.append(filename)
+        
         if skip_existing and os.path.exists(filename):
             print("Skipping " + os.path.basename(filename) + " as it exists already")
         else:
@@ -275,3 +277,6 @@ def download_data(HAPI_dict, skip_existing=False):
                           HAPI_dict["download_dir_path"], product_size)
             print("Download complete (took " + str(time_elapsed) + " seconds)")
             print("")
+            
+    HAPI_dict['filenames'] = filenames
+    return HAPI_dict
