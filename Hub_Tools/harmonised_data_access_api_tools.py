@@ -248,7 +248,7 @@ def get_filename_from_cd(cd):
     fname = re.findall('filename=(.+)', cd)
     if len(fname) == 0:
         return None
-    return fname[0][2:-1]
+    return fname[0].replace("'","").replace('"',"")
 
 def download_data(HAPI_dict, skip_existing=False): 
     '''
@@ -274,4 +274,4 @@ def download_data(HAPI_dict, skip_existing=False):
             time_elapsed = downloadFile(download_url, HAPI_dict["headers"],\
                           HAPI_dict["download_dir_path"], product_size)
             print("Download complete (took " + str(time_elapsed) + " seconds)")
-            print("----------------------------")
+            print("")

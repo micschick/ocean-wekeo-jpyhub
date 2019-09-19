@@ -1,0 +1,34 @@
+{
+    "datasetId": "EO:ECMWF:DAT:CAMS_SOLAR_RADIATION_TIMESERIES",
+    "stringInputValues": [
+        {
+            "name": "latitude",
+            "value": "0"
+        },
+        {
+            "name": "longitude",
+            "value": "0"
+        },
+        {
+            "name": "altitude",
+            "value": "-999"
+        }
+    ],
+    "stringChoiceValues": [
+        {
+            "name": "time_step",
+            "value": "1day"
+        },
+        {
+            "name": "time_reference",
+            "value": "UT"
+        }
+    ],
+    "dateRangeSelectValues": [
+        {
+            "name": "date_range",
+            "start": "2019-01-01T00:00:00.000Z",
+            "end": "2019-09-02T00:00:00.000Z"
+        }
+    ]
+}

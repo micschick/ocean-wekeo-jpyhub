@@ -1,0 +1,19 @@
+Product downloads:
+
+Product                                                      Source        Size (MB)   Files     Download time (sec)
+EO:MO:DAT:OCEANCOLOUR_GLO_CHL_L4_REP_OBSERVATIONS_009_093    MERC(CMEMS)    427        1         31, 31, 33, 31, 30
+EO:ECMWF:DAT:ERA5_HOURLY_DATA_ON_SINGLE_LEVELS_1979_PRESENT  ECMWF(C3S)     475        1         85, 84, 92, 101, 81
+EO:ECMWF:DAT:CAMS_SOLAR_RADIATION_TIMESERIES                 ECMWF(CAMS)     41        1         6, 6, 5, 6, 6
+EO:EUM:DAT:SENTINEL-3:OL_1_EFR___                            EUM           2384        4         171, 164, 172, 167  
+EO:ESA:DAT:SENTINEL-2:MSI1C                                  ESA           2033        3         153, 163, 156, 154
+EO:ESA:DAT:SENTINEL-1:L1_GRD                                 ESA           3691        4         294, 282, 298, 288
+
+Download rates to Hub
+
+Product                                                      Avg Download rate: Mb/sec           Est time for 100 images
+EO:MO:DAT:OCEANCOLOUR_GLO_CHL_L4_REP_OBSERVATIONS_009_093    13.3
+EO:ECMWF:DAT:ERA5_HOURLY_DATA_ON_SINGLE_LEVELS_1979_PRESENT   5.4
+EO:ECMWF:DAT:CAMS_SOLAR_RADIATION_TIMESERIES                  6.8
+EO:EUM:DAT:SENTINEL-3:OL_1_EFR___                            14.1                                70 minutes
+EO:ESA:DAT:SENTINEL-2:MSI1C                                  13.0                                87 minutes
+EO:ESA:DAT:SENTINEL-1:L1_GRD                                 12.7                                121 minutes

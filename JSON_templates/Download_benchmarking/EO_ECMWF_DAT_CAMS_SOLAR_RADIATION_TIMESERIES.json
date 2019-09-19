@@ -1,0 +1,38 @@
+{
+    "datasetId": "EO:ECMWF:DAT:CAMS_SOLAR_RADIATION_TIMESERIES",
+    "stringInputValues": [
+        {
+            "name": "latitude",
+            "value": "0"
+        },
+        {
+            "name": "longitude",
+            "value": "0"
+        },
+        {
+            "name": "altitude",
+            "value": "-999"
+        }
+    ],
+    "stringChoiceValues": [
+        {
+            "name": "sky_type",
+            "value": "clear"
+        },
+        {
+            "name": "time_step",
+            "value": "1minute"
+        },
+        {
+            "name": "time_reference",
+            "value": "UT"
+        }
+    ],
+    "dateRangeSelectValues": [
+        {
+            "name": "date_range",
+            "start": "2016-01-01T00:00:00.000Z",
+            "end": "2016-12-31T00:00:00.000Z"
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+{
+    "datasetId": "EO:EUM:DAT:SENTINEL-3:OL_1_EFR___",
+    "stringChoiceValues": [
+        {
+            "name": "timeliness",
+            "value": "Near Real Time"
+        }
+    ],
+    "dateRangeSelectValues": [
+        {
+            "name": "dtrange",
+            "start": "2019-09-10T00:00:00.000Z",
+            "end": "2019-09-11T23:59:59.000Z"
+        }
+    ],
+    "boundingBoxValues": [
+        {
+            "name": "bbox",
+            "bbox": [
+                22,
+                33,
+                27,
+                36
+            ]
+        }
+    ]
+}

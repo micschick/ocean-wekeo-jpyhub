@@ -1,0 +1,27 @@
+{
+    "datasetId": "EO:ESA:DAT:SENTINEL-2:MSI1C",
+    "stringChoiceValues": [
+        {
+            "name": "collection",
+            "value": "MSI_L1C"
+        }
+    ],
+    "dateRangeSelectValues": [
+        {
+            "name": "dtrange",
+            "start": "2019-07-14T00:00:00.000Z",
+            "end": "2019-07-22T23:59:59.000Z"
+        }
+    ],
+    "boundingBoxValues": [
+        {
+            "name": "bbox",
+            "bbox": [
+                170,
+                -46,
+                170.8,
+                -45.7
+            ]
+        }
+    ]
+}
