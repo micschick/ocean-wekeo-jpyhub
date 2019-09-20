@@ -1,0 +1,27 @@
+{
+    "datasetId": "EO:EUM:DAT:SENTINEL-3:OL_2_WFR___",
+    "stringChoiceValues": [
+        {
+            "name": "timeliness",
+            "value": "Non Time Critical"
+        }
+    ],
+    "dateRangeSelectValues": [
+        {
+            "name": "dtrange",
+            "start": "2018-10-26T08:30:19.000Z",
+            "end": "2018-10-26T08:35:19.000Z"
+        }
+    ],
+    "boundingBoxValues": [
+        {
+            "name": "bbox",
+            "bbox": [
+                -180,
+                -90,
+                180,
+                90
+            ]
+        }
+    ]
+}
