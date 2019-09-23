@@ -5,8 +5,16 @@ from matplotlib.colors import LinearSegmentedColormap
 import matplotlib.pyplot as plt
 import xarray as xr
 import os
+import sys
+import cartopy.crs as ccrs
+import matplotlib.ticker as mticker
+from skimage import exposure
 
-def process_data(VAR, LON, LAT, bbox, varname, reduce, log_var=False):
+# specific tools (which can be found here ../Hub_tools/)
+sys.path.append(os.path.dirname(os.getcwd()) + '/Hub_Tools/')
+import image_tools as img
+
+def process_SC_data(VAR, LON, LAT, bbox, varname, reduce, log_var=False):
     '''
      Just some pre-processing. Probably requires extensive testing.
     '''
@@ -35,9 +43,9 @@ def process_data(VAR, LON, LAT, bbox, varname, reduce, log_var=False):
 
     return VAR, LON, LAT, vlimits
 
-def build_plot_command(vlimits, red_widgets, green_widgets, blue_widgets):
+def build_SC_plot_command(vlimits, red_widgets, green_widgets, blue_widgets):
     
-    runCMD = 'iplot = interactive(eq.plot_eq'\
+    runCMD = 'iplot = interactive(eq.plot_SC_eq'\
                         + ', varname=fixed(varname)' \
                         + ', var=fixed(VAR), lon=fixed(LON), lat=fixed(LAT)' \
                         + ', vmin=fixed(' + str(vlimits[0]) + ')' \
@@ -47,10 +55,20 @@ def build_plot_command(vlimits, red_widgets, green_widgets, blue_widgets):
                         + ', '.join(green_widgets) + ', ' \
                         + ', '.join(blue_widgets) + ')'
     return runCMD
+
+def build_RGB_plot_command(all_widgets):
     
-def make_widgets(channel_red, channel_green, channel_blue):
+    runCMD = 'iplot = interactive(eq.plot_RGB_eq'\
+                        + ', red=fixed(red), green=fixed(green), blue=fixed(blue)'\
+                        + ', fsz=fixed(fsz)' \
+                        + ', subset_extents=fixed(subset_extents)' \
+                        + ', subset_image=fixed(subset_image),' \
+                        + ', '.join(all_widgets) + ')'
+    return runCMD
+
+def make_SC_widgets(channel_red, channel_green, channel_blue):
     '''
-     Build the interactive plotter widgets
+     Build the single channel interactive plotter widgets
     '''
     red_widgets = [] ; green_widgets = [] ; blue_widgets = []
     for ii in range(len(channel_red)):
@@ -62,7 +80,49 @@ def make_widgets(channel_red, channel_green, channel_blue):
                             + str(channel_blue[ii]) + ', min=0.0, max=1.0, step=0.025)')
     return red_widgets, green_widgets, blue_widgets
 
-def plot_eq(varname, var, lon, lat, vmin, vmax, log_var, **kwargs):
+def make_RGB_widgets(truncate_image, min_percentile, max_percentile,\
+                     unhitch, histogram_image, histogram_channels):
+    '''
+     Build the RGB interactive plotter widgets
+    '''
+    trunc_check_widget = "trunc_check_widget = widgets.Checkbox(value=False, description='truncate data', disabled=False)"
+    trunc_limits_widget = "trunc_limits_widget = widgets.FloatRangeSlider(value=["\
+                          + str(min_percentile) + ", "+str(max_percentile)\
+                          + "], min=0, max=100"\
+                          +", step=0.1, description='Trunc. values'"\
+                          + ", disabled=False, continuous_update=False, orientation='horizontal'"\
+                          + ", readout=True, readout_format='.1f',)"
+    
+    normalise_widget = "normalise_widget = widgets.Checkbox(value=False, description='Unhitch data', disabled=False)"
+    histogram_widget = "histogram_widget = widgets.Checkbox(value=False, description='Histogram data', disabled=False)"
+    
+    contrast_limits_widget_red = "contrast_limits_widget_red = widgets.FloatSlider(value=1.0"\
+                          + ", min=0.0, max=10.0" + ", step=0.1, description='Contrast red'"\
+                          + ", disabled=False, continuous_update=False, orientation='horizontal'"\
+                          + ", readout=True, readout_format='.1f',)"
+
+    contrast_limits_widget_green = "contrast_limits_widget_green = widgets.FloatSlider(value=1.0"\
+                          + ", min=0.0, max=10.0" + ", step=0.1, description='Contrast green'"\
+                          + ", disabled=False, continuous_update=False, orientation='horizontal'"\
+                          + ", readout=True, readout_format='.1f',)"
+
+    contrast_limits_widget_blue = "contrast_limits_widget_blue = widgets.FloatSlider(value=1.0"\
+                          + ", min=0.0, max=10.0" + ", step=0.1, description='Contrast blue'"\
+                          + ", disabled=False, continuous_update=False, orientation='horizontal'"\
+                          + ", readout=True, readout_format='.1f',)"
+    
+    brightness_limits_widget = "brightness_limits_widget = widgets.FloatSlider(value=1.0"\
+                          + ", min=0.0, max=10.0" + ", step=0.1, description='Brightness'"\
+                          + ", disabled=False, continuous_update=False, orientation='horizontal'"\
+                          + ", readout=True, readout_format='.1f',)"
+
+    all_widgets = [trunc_check_widget, trunc_limits_widget, normalise_widget, histogram_widget,\
+           contrast_limits_widget_red, contrast_limits_widget_green, contrast_limits_widget_blue,\
+           brightness_limits_widget]
+    
+    return all_widgets
+
+def plot_SC_eq(varname, var, lon, lat, vmin, vmax, log_var, **kwargs):
 
     nchannels = int(len(kwargs)/3)    
     RED_list = []
@@ -148,3 +208,63 @@ def plot_eq(varname, var, lon, lat, vmin, vmax, log_var, **kwargs):
     plt.show()
     
     return ax1, ax2, REDS, GREENS, BLUES
+
+def plot_RGB_eq(red, green, blue, fsz, subset_image, subset_extents, **kwargs):
+    '''
+     Build the RGB interactive plotter widgets
+    '''
+    
+    contrast = [kwargs['contrast_limits_widget_red'],\
+                kwargs['contrast_limits_widget_green'],\
+                kwargs['contrast_limits_widget_blue']]
+    
+    brightness = kwargs['brightness_limits_widget']
+    
+    red_img = red.copy()
+    green_img = green.copy()
+    blue_img = blue.copy()
+    
+    if kwargs['trunc_check_widget']:
+        red_img = img.truncate_image(red_img, \
+                  min_percentile=kwargs['trunc_limits_widget'][0],\
+                  max_percentile=kwargs['trunc_limits_widget'][1])
+        green_img = img.truncate_image(green_img, \
+                  min_percentile=kwargs['trunc_limits_widget'][0],\
+                  max_percentile=kwargs['trunc_limits_widget'][1])
+        blue_img = img.truncate_image(blue_img, \
+                  min_percentile=kwargs['trunc_limits_widget'][0],\
+                  max_percentile=kwargs['trunc_limits_widget'][1])
+        
+    height = np.shape(red_img)[0]
+    width = np.shape(red_img)[1]
+    image_array = np.zeros((height, width, 3), dtype=np.float32)
+
+    image_array[..., 0] = red_img
+    image_array[..., 1] = green_img
+    image_array[..., 2] = blue_img
+    
+    image_array = img.norm_image(image_array, contrast=contrast, unhitch=kwargs['normalise_widget'])
+    
+    if kwargs['histogram_widget']:
+        image_array = exposure.equalize_adapthist(image_array, nbins=512)
+
+    # intitialise our figure
+    fig1 = plt.figure(figsize=(5, 5), dpi=150)
+    plt.rc('font', size=fsz)
+
+    # make an axis
+    gs = gridspec.GridSpec(1, 1)
+    m = plt.subplot(gs[0,0], projection=ccrs.PlateCarree())
+    img_extent = (subset_extents[0], subset_extents[1], subset_extents[2], subset_extents[3])
+    m.imshow(image_array ** brightness, origin='upper', extent=img_extent, transform=ccrs.PlateCarree())
+
+    # embellish with gridlines and ticks
+    g1 = m.gridlines(draw_labels = True, zorder=20, color='0.5', linestyle='--',linewidth=0.5)
+    g1.xlocator = mticker.FixedLocator(np.linspace(int(subset_extents[0])-1,\
+                                                   int(subset_extents[1])+1, 5))
+    g1.ylocator = mticker.FixedLocator(np.linspace(int(subset_extents[2])-1,\
+                                                   int(subset_extents[3])+1, 5))
+    g1.xlabels_top = False
+    g1.ylabels_right = False
+    g1.xlabel_style = {'size': fsz, 'color': 'black'}
+    g1.ylabel_style = {'size': fsz, 'color': 'black'}
