@@ -145,7 +145,10 @@ def check_job_status(HAPI_dict):
            time.sleep(2)
 
     numberOfResults = str(results)
+    HAPI_dict['nresults'] = results
     print ("Total number of products/results :" + numberOfResults)
+    
+    return HAPI_dict
 
 def get_results_list(HAPI_dict):
     '''
@@ -280,3 +283,26 @@ def download_data(HAPI_dict, skip_existing=False):
             
     HAPI_dict['filenames'] = filenames
     return HAPI_dict
+
+def get_filenames(HAPI_dict):
+    '''
+     Get the filenames of the target file
+    '''
+    filenames = []
+    for result in HAPI_dict["results"]['content']:
+        externalUri = result['externalUri']
+        product_size = result['fileSize']
+        download_url = HAPI_dict["broker_address"]\
+                       + '/datarequest/result/'\
+                       + HAPI_dict["job_id"] + '?externalUri='\
+                       + urllib.parse.quote(externalUri)
+
+        r = requests.get(download_url, headers=HAPI_dict["headers"],\
+                         stream=True)
+        filename = os.path.join(HAPI_dict["download_dir_path"],\
+                   get_filename_from_cd(r.headers.get('content-disposition')))
+        filenames.append(filename)
+    HAPI_dict['filenames'] = filenames
+    return HAPI_dict
+    
+    
