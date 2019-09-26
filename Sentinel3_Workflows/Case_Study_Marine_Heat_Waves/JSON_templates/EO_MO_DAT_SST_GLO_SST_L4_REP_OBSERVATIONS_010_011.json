@@ -1,9 +1,9 @@
 {
-    "datasetId": "EO:MO:DAT:SST_GLO_SST_L4_NRT_OBSERVATIONS_010_001",
+    "datasetId": "EO:MO:DAT:SST_GLO_SST_L4_REP_OBSERVATIONS_010_011",
     "stringChoiceValues": [
         {
             "name": "product",
-            "value": "METOFFICE-GLO-SST-L4-NRT-OBS-SST-V2"
+            "value": "METOFFICE-GLO-SST-L4-RAN-OBS-SST"
         }
     ],
     "multiStringSelectValues": [
@@ -26,9 +26,9 @@
         {
             "name": "bbox",
             "bbox": [
-                -175.0,
-                0.0,
-                -135.0,
+                -150.0,
+                20.0,
+                -120.0,
                 40.0
             ]
         }
