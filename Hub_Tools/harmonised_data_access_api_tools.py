@@ -146,7 +146,7 @@ def check_job_status(HAPI_dict):
 
     numberOfResults = str(results)
     HAPI_dict['nresults'] = results
-    print ("Total number of products/results :" + numberOfResults)
+    print ("Total number of products/results: " + numberOfResults)
     
     return HAPI_dict
 
