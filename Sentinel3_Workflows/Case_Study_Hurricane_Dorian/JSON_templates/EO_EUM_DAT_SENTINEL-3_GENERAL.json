@@ -1,0 +1,16 @@
+{
+    "datasetId": "%KEY%",
+    "stringChoiceValues": [
+        {
+            "name": "timeliness",
+            "value": "Non Time Critical"
+        }
+    ],
+    "dateRangeSelectValues": [
+        {
+            "name": "dtrange",
+            "start": "%DATE_START%",
+            "end": "%DATE_END%"
+        }
+    ]
+}

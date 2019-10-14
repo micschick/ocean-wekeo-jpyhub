@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.ndimage.measurements import label
 
 def spheric_dist(lat1,lat2,lon1,lon2,mode='global'):
     #####################################################################
@@ -127,3 +128,50 @@ def norm_image(image_array, contrast=[1.0, 1.0, 1.0], unhitch=True):
                 / (maxval - minval)
             
     return image_array
+
+def surrounding_mean(xx,yy,array):
+   '''
+    takes mean of points around given point; fails on borders
+   '''
+   try:
+       sum_vals = np.nanmean([array[xx-1,yy-1],\
+                              array[xx,yy-1],\
+                              array[xx+1,yy-1],\
+                              array[xx-1,yy],\
+                              array[xx+1,yy],\
+                              array[xx-1,yy+1],\
+                              array[xx,yy+1],\
+                              array[xx+1,yy+1]])
+   except:   
+       sum_vals = np.nan
+
+   return sum_vals
+
+def gap_fill(input_array):
+    '''
+     fills artefact regions (assumed negative) with average of the perimeter
+    '''
+    # set up blank array
+    input_blank = input_array.copy()
+    input_array[input_array<0]=np.nan
+    # mask boolean array, positive values assumed legitimate
+    input_blank[input_blank>=0]=0
+    input_blank[input_blank<0]=1
+    # set structure
+    structure = np.ones((3, 3), dtype=np.int)
+    # isolate 'islands'
+    labelled, ncomponents = label(input_blank, structure)
+
+    # cycle through labelled islands and get perimeter value
+    for the_label in np.unique(labelled):
+      sum_value = []
+      indices = np.where(labelled==the_label)
+      Xs = indices[0]
+      if len(Xs) > np.shape(input_array)[0]*np.shape(input_array)[1]*0.5:
+          continue
+      Ys = indices[1]
+      for ii in np.arange(0,len(Xs)):
+           sum_value.append(surrounding_mean(Xs[ii],Ys[ii],input_array))
+      input_array[labelled == the_label] = np.nanmean(sum_value)
+
+    return input_array

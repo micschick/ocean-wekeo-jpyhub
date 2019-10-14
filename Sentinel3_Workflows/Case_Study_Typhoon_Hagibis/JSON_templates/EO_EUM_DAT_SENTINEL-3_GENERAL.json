@@ -1,0 +1,27 @@
+{
+    "datasetId": "%KEY%",
+    "stringChoiceValues": [
+        {
+            "name": "timeliness",
+            "value": "Near Real Time"
+        }
+    ],
+    "dateRangeSelectValues": [
+        {
+            "name": "dtrange",
+            "start": "%DATE_START%",
+            "end": "%DATE_END%"
+        }
+    ],
+    "boundingBoxValues": [
+        {
+            "name": "bbox",
+            "bbox": [
+                139.010522042975,
+                34.23310898633704,
+                141.3757144735746,
+                36.77425265835404
+            ]
+        }
+    ]
+}

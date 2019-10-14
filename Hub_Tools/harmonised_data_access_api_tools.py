@@ -253,7 +253,7 @@ def get_filename_from_cd(cd):
         return None
     return fname[0].replace("'","").replace('"',"")
 
-def download_data(HAPI_dict, skip_existing=False): 
+def download_data(HAPI_dict, skip_existing=False, verbose=False): 
     '''
      Download the data
     '''
@@ -266,9 +266,15 @@ def download_data(HAPI_dict, skip_existing=False):
                        + '/datarequest/result/'\
                        + HAPI_dict["job_id"] + '?externalUri='\
                        + urllib.parse.quote(externalUri)
-
+        
         r = requests.get(download_url, headers=HAPI_dict["headers"],\
                          stream=True)
+
+        if verbose:
+            print(r)
+            print(r.headers)
+            print(r.headers.get('content-disposition'))
+            
         filename = os.path.join(HAPI_dict["download_dir_path"],\
                    get_filename_from_cd(r.headers.get('content-disposition')))
         filenames.append(filename)

@@ -1,0 +1,58 @@
+#! /bin/bash
+#-----------------------------------------------------------------------------------------------------
+#
+#    Version: 1.1
+#    Date:    01/10/2019
+#    Author:  Ben Loveday (Plymouth Marine Laboratory) and Hayley Evers-King (EUMETSAT)
+#    Credit:  This code was developed for EUMETSAT under contracts for the Copernicus 
+#             programme.
+#    License: This code is offered as open source and free-to-use in the public domain, 
+#             with no warranty.
+#-----------------------------------------------------------------------------------------------------
+# IMPORTANT!
+# For licencing and attribution information, please see:
+# /home/jovyan/work/ocean-wekeo-jpyhub/Third_Party_Tools/Google_Drive_Downloader/README.md
+#-----------------------------------------------------------------------------------------------------
+# Usage:
+#
+# ./Install_my_data.run <TARGET_FILE> <GoogleFileID> <MYPATH> <KEEP_FILES> 
+#
+# TARGET_FILE is the file name of the remote file
+# GoogleFileID is the alpha_numeric key of the file to get. This can be extracted by right clicking on the
+#   file and selecting 'share'. This will provide a file link of the following format:
+#   https://drive.google.com/file/d/******************************/view?usp=sharing
+#   The starred part is the GoogleFileID.
+# MYPATH is the installation directory for the data.
+# If KEEP_FILES is set to 'y' the zip files are retained. Otherwise they are removed
+#-----------------------------------------------------------------------------------------------------
+
+TARGET_FILE=$1
+GoogleFileID=$2
+SUBPATH=$3
+KEEP_FILES=$4
+
+download_CMD="../Third_Party_Tools/Google_Drive_Downloader/download_gdrive.py"
+
+if [ -z "$SUBPATH" ]; then
+    echo "No install path provided, unzipping data to here"
+    SUBPATH="."
+else
+	echo "Installing data to "$SUBPATH
+fi
+
+if [ "$2" = "y" ]; then
+    echo "Keeping zip files"
+else
+    echo "Zip files will be deleted post installation"
+fi
+
+# download the data
+echo "Downloading and unzipping the data...."
+python $download_CMD $GoogleFileID $TARGET_FILE
+
+unzip -o $TARGET_FILE -d $SUBPATH'/'
+if [ "$2" != "y" ]; then
+  rm $TARGET_FILE
+fi
+
+echo "All done!"
