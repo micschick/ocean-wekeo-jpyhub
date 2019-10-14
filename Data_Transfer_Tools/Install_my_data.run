@@ -2,7 +2,7 @@
 #-----------------------------------------------------------------------------------------------------
 #
 #    Version: 1.0
-#    Date:    12/03/2019
+#    Date:    12/03/2018
 #    Author:  Ben Loveday and Hayley Evers-King (Plymouth Marine Laboratory)
 #    Credit:  This code was developed for EUMETSAT under contracts for the Copernicus 
 #             programme.
@@ -29,23 +29,81 @@
 #-----------------------------------------------------------------------------------------------------
 
 SUBPATH=$1
+KEEP_FILES=$2
 
 if [ -z "$SUBPATH" ]; then
-    echo "No install path provided, installing data here"
+    echo "No install path provided, unzipping data to here"
     SUBPATH="."
 else
 	echo "Installing data to "$SUBPATH
 fi
- 
+
+if [ "$2" = "y" ]; then
+    echo "Keeping zip files"
+else
+    echo "Zip files will be deleted post installation"
+fi
+
 # download the data
-echo "Downloading the data...."
-python Third_party/download_google_drive/download_gdrive.py 1nKKcL29NEzR3Dk8Btntb3XVp0lXoMQ7f Training_data.zip
+echo "Downloading and unzipping the data...."
+python Third_party/download_google_drive/download_gdrive.py 1vW8UF7dO4cVoNxnN0hYIJYuofJO1FRR3 GPT_L1_test_data.zip
+unzip -o GPT_L1_test_data.zip -d $SUBPATH'/'
+if [ "$2" != "y" ]; then
+  rm GPT_L1_test_data.zip
+fi
 
-# unzip & situate the data
-echo "Unzipping the data...."
-unzip -o Training_data.zip -d $SUBPATH'/'Training_data
+python Third_party/download_google_drive/download_gdrive.py 1D5qJRYWNPcNQs17SSdH2BeOS7y10uvOS Jason_test_data.zip
+unzip -o Jason_test_data.zip -d $SUBPATH'/'
+if [ "$2" != "y" ]; then
+  rm Jason_test_data.zip
+fi
 
-#clear up zip files
-#rm -f $SUBPATH'/'Training_data.zip
+python Third_party/download_google_drive/download_gdrive.py 1PdgeOqmFg9ZyAJlKJXd1UH4Ma4Qe1x5E L2P_test_data.zip
+unzip -o L2P_test_data.zip -d $SUBPATH'/'
+if [ "$2" != "y" ]; then
+  rm L2P_test_data.zip
+fi
 
-echo "All done!"
+python Third_party/download_google_drive/download_gdrive.py 1GJ61tD72ps5ylAMYY-hA4h_a8u3QtQkX L3_L4_test_data.zip
+unzip -o L3_L4_test_data.zip -d $SUBPATH'/'
+if [ "$2" != "y" ]; then
+  rm L3_L4_test_data.zip
+fi
+
+python Third_party/download_google_drive/download_gdrive.py 1hFET2Cna-WhUbKv_kneXN4R9Xq-8l5On OLCI_test_data.zip
+unzip -o OLCI_test_data.zip -d $SUBPATH'/'
+if [ "$2" != "y" ]; then
+  rm OLCI_test_data.zip
+fi
+
+python Third_party/download_google_drive/download_gdrive.py 1DvwHJZeP7yYEd1h4lzTNOjh_O9C7h-Lt S3_test_data.zip
+unzip -o S3_test_data.zip -d $SUBPATH'/'
+if [ "$2" != "y" ]; then
+  rm S3_test_data.zip
+fi
+
+python Third_party/download_google_drive/download_gdrive.py 1c7dsdV06GYcwNWU096qeyeUVmc6h3DNj S3_workflow_data_part_1.zip
+unzip -o S3_workflow_data_part_1.zip -d $SUBPATH'/'
+if [ "$2" != "y" ]; then
+  rm S3_workflow_data_part_1.zip
+fi
+
+python Third_party/download_google_drive/download_gdrive.py 1W6i7eWZd4GMFdFhUIKUkk1QFQub8RqS4 S3_workflow_data_part_2.zip
+unzip -o S3_workflow_data_part_2.zip -d $SUBPATH'/'
+if [ "$2" != "y" ]; then
+  rm S3_workflow_data_part_2.zip
+fi
+
+python Third_party/download_google_drive/download_gdrive.py 14uQR3qzRibn4uF3LsRSrE8JYqLIf-2vS SLSTR_test_data.zip
+unzip -o SLSTR_test_data.zip -d $SUBPATH'/'
+if [ "$2" != "y" ]; then
+  rm SLSTR_test_data.zip
+fi
+
+python Third_party/download_google_drive/download_gdrive.py 1mjOCAjfiJluyulxRNF9nv_N6dlHZhKL_ SRAL_test_data.zip
+unzip -o SRAL_test_data.zip -d $SUBPATH'/'
+if [ "$2" != "y" ]; then
+  rm SRAL_test_data.zip
+fi
+
+echo "All done! Zip files removed"
