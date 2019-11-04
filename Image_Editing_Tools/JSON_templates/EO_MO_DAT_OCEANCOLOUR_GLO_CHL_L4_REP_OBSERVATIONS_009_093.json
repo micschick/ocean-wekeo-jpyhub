@@ -1,0 +1,35 @@
+{
+    "datasetId": "EO:MO:DAT:OCEANCOLOUR_GLO_CHL_L4_REP_OBSERVATIONS_009_093",
+    "stringChoiceValues": [
+        {
+            "name": "product",
+            "value": "dataset-oc-glo-chl-multi_cci-l4-chl_4km_monthly-rep-v02"
+        }
+    ],
+    "multiStringSelectValues": [
+        {
+            "name": "variables",
+            "value": [
+                "CHL"
+            ]
+        }
+    ],
+    "dateRangeSelectValues": [
+        {
+            "name": "dtrange",
+            "start": "2016-05-01T00:00:00.000Z",
+            "end": "2016-05-02T00:00:00.000Z"
+        }
+    ],
+    "boundingBoxValues": [
+        {
+            "name": "bbox",
+            "bbox": [
+                -179.97917,
+                -89.979164,
+                179.97917,
+                89.979164
+            ]
+        }
+    ]
+}

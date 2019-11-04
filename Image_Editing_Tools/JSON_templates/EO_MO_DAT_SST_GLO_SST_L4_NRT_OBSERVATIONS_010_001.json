@@ -1,0 +1,35 @@
+{
+    "datasetId": "EO:MO:DAT:SST_GLO_SST_L4_NRT_OBSERVATIONS_010_001",
+    "stringChoiceValues": [
+        {
+            "name": "product",
+            "value": "METOFFICE-GLO-SST-L4-NRT-OBS-SST-V2"
+        }
+    ],
+    "multiStringSelectValues": [
+        {
+            "name": "variables",
+            "value": [
+                "analysed_sst"
+            ]
+        }
+    ],
+    "dateRangeSelectValues": [
+        {
+            "name": "dtrange",
+            "start": "2017-08-18T00:00:00.000Z",
+            "end": "2017-08-19T00:00:00.000Z"
+        }
+    ],
+    "boundingBoxValues": [
+        {
+            "name": "bbox",
+            "bbox": [
+                -179.975,
+                -89.975,
+                179.875,
+                89.975
+            ]
+        }
+    ]
+}
